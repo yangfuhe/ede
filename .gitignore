@@ -11,3 +11,7 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+/lib/systemd/system/mongod.service
+
+---------------------
+本文来自 给我瓶叶小白 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/yjz_sdau/article/details/79278847?utm_source=copy
