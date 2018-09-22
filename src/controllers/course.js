@@ -240,7 +240,12 @@ const queryCourseList = async ctx => {
     ctx.body = getResponse(true, { skip, thisCity, end, course });
 }
 
-module.exports = {
+const checkToken  = async ctx=>{
+    let {signature,timestamp,nonce,echostr} = ctx.request.query;
+    console.log(8888,signature,timestamp,nonce,echostr)
+	ctx.body = echostr
+}
+module.exports = {s
     uploadImg,
     queryCourse,
     removeCourse,
@@ -250,5 +255,6 @@ module.exports = {
     addCourse,
     queryLunbo,
     queryTuijianCourse,
-    queryCourseList
+    queryCourseList,
+	checkToken
 };
