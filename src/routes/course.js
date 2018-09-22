@@ -25,6 +25,6 @@ router.get('/queryTuijianCourse', course.queryTuijianCourse);
 
 router.post('/queryCourseList', course.queryCourseList);
 
-router.get('/token', course.checkToken());
+router.get('/tokenn', course.checkToken);
 
 module.exports = router;

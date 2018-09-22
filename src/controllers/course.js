@@ -243,9 +243,9 @@ const queryCourseList = async ctx => {
 const checkToken  = async ctx=>{
     let {signature,timestamp,nonce,echostr} = ctx.request.query;
     console.log(8888,signature,timestamp,nonce,echostr)
-	ctx.body = echostr
+	ctx.body = echostr;//getResponse(true, "ddddddd");
 }
-module.exports = {s
+module.exports = {
     uploadImg,
     queryCourse,
     removeCourse,
