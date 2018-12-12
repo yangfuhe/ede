@@ -39,7 +39,8 @@ class MongoStore {
     }
 
     async set(key, sess) {
-        log('设置')
+        log('设置', key)
+        console.log(sess)
         var expireTime = new Date();
         var t_s = expireTime.getTime();
 

@@ -5,7 +5,6 @@ const course = require('../controllers/course');
 const router = Router({
     prefix: '/course',
 });
-router.post('/uploadImg', course.uploadImg);
 
 router.post('/addCourse', course.addCourse);
 

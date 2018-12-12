@@ -5,34 +5,16 @@ let fs = require('fs');
 let uuidv1 = require('uuid/v1');
 const { getResponse } = require('../helpers');
 
-const uploadImg = async ctx => {
-    let file = ctx.request.files.file;
-    let orgId = ctx.session.orgId;
-    let url = path.join(__dirname, '../../') + 'temp/' + orgId;
-    await fs.renameSync(file.path, url);
-    ctx.body = getResponse(true);
-};
-
 const addCourse = async ctx => {
-    let { name, fileName, type, tags } = ctx.request.body;
-    if (!name || !fileName || !type || !tags || (type !== 1 && type !== 2)) {
+    let { name, fileName, type, tags, imgUrl } = ctx.request.body;
+    if (!name || !imgUrl || !fileName || !type || !tags || (type !== 1 && type !== 2)) {
         ctx.body = getResponse(false, 'e001');
     }
     let orgId = ctx.session.orgId;
-    let suffix = fileName.substr(fileName.lastIndexOf('.'));
-    let url = path.join(__dirname, '../../') + 'temp/' + orgId;
-    let imgUrl = '/api/img/' + uuidv1() + suffix;
-    let newUrl = path.join(__dirname, '../../') + 'static' + imgUrl;
-    //let exist = fs.existsSync(address);
-    let fag1 = fs.existsSync(path.join(__dirname, '../../') + 'static');
-    if (!fag1) fs.mkdirSync(path.join(__dirname, '../../') + 'static');
-    let fag2 = fs.existsSync(path.join(__dirname, '../../') + 'static/api');
-    if (!fag2) fs.mkdirSync(path.join(__dirname, '../../') + 'static/api');
-    let fag3 = fs.existsSync(path.join(__dirname, '../../') + 'static/api/img');
-    if (!fag3) fs.mkdirSync(path.join(__dirname, '../../') + 'static/api/img');
-
-    await fs.renameSync(url, newUrl);
+    console.log(name, fileName, type, tags, imgUrl, orgId)
     let org = await _videoModel.org.findOne({ _id: orgId }).lean()
+    console.log(6666)
+    imgUrl = 'https://' + imgUrl
     let course = await _videoModel.course.create({
         name,
         imgUrl,
@@ -41,8 +23,12 @@ const addCourse = async ctx => {
         tags,
         createTime: new Date(),
         orgName: org.name,
-        ...org,
-        province: org.province
+        province: org.province,
+        provincePinyin: org.provincePinyin,
+        city: org.city,
+        cityPinyin: org.cityPinyin,
+        area: org.area,
+        areaPinyin: org.areaPinyin
     });
     ctx.body = getResponse(true, course._id);
 };
@@ -159,9 +145,9 @@ const queryTuijianCourse = async ctx => {
         'tuiJian.end': { $gt: date }
     }).sort({ 'lunbo.5index': 1 })
     let _ids = []
-    org.forEach(c => {
-        _ids.push(c._id)
-    });
+    for (let o of org) {
+        _ids.push(o._id)
+    }
     let length = _ids.length;
     if (length < 5) {
         let orgCity = await _videoModel.org.find({
@@ -183,6 +169,7 @@ const queryTuijianCourse = async ctx => {
                 if (!len) break;
                 let j = parseInt(Math.random() * orgNoCity.length)
                 _ids.push(orgNoCity.splice(j, 1)[0]._id)
+                console.log(_ids)
             }
         }
     }
@@ -240,13 +227,13 @@ const queryCourseList = async ctx => {
     ctx.body = getResponse(true, { skip, thisCity, end, course });
 }
 
-const checkToken  = async ctx=>{
-    let {signature,timestamp,nonce,echostr} = ctx.request.query;
-    console.log(8888,signature,timestamp,nonce,echostr)
-	ctx.body = echostr;//getResponse(true, "ddddddd");
+
+const checkToken = async ctx => {
+    let { signature, timestamp, nonce, echostr } = ctx.request.query;
+    console.log(8888, signature, timestamp, nonce, echostr)
+    ctx.body = echostr; //getResponse(true, "ddddddd");
 }
 module.exports = {
-    uploadImg,
     queryCourse,
     removeCourse,
     modifyCourseImg,
@@ -256,5 +243,6 @@ module.exports = {
     queryLunbo,
     queryTuijianCourse,
     queryCourseList,
-	checkToken
+    checkToken
 };
+//'8cc349fb7b8a82b37b399fcd788f9750e7c3dbee' '1537636001' '81470409' '2943727585004584693'

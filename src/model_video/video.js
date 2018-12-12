@@ -6,6 +6,7 @@ const model = {
         name: String,
         url: String,
         size: Number,
+        duration: Number,
         createTime: Date,
     }
 }

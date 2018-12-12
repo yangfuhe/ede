@@ -26,6 +26,16 @@ exports.getResponse = function(success, e) {
     }
 };
 
+exports.wxLogin = async(ctx, next) => {
+    let stuId = ctx.session.stuId;
+    console.log(1111, stuId)
+    if (!stuId) {
+        console.log(ctx)
+        ctx.session.stuId = ctx.request.body.stuId || ctx.request.query.stuId
+        console.log(2222, ctx.session.stuId)
+    }
+    await next()
+}
 
 // 校验手机号码格式是否正确
 exports.checkPhone = function(phone) {
@@ -41,5 +51,5 @@ exports.checkPhone = function(phone) {
 exports.getOpenid = async function(code) {
     return axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=wx48308d893fbd4551&secret=6401a3369d201853d00f6031879fd337&js_code=${code}&grant_type=authorization_code`);
 }
-
 exports.smsCode = require('./sms').smsCode
+exports.cosSign = require('./cosSign')

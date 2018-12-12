@@ -1,7 +1,8 @@
 const Router = require('koa-router')
 
 const video = require('../controllers/video')
-    //const Auth = require("../middleware/auth")
+const { wxLogin } = require('../helpers');
+//const Auth = require("../middleware/auth")
 const router = Router({
     prefix: '/video'
 })

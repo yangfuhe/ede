@@ -14,7 +14,8 @@ let tag = require('./tag')
 let session = require('./session')
 let stu = require('./stu')
 let area = require('./area')
-
+let history = require('./history')
+let ueditor = require('./ueditor')
 let models = [
     course,
     video,
@@ -22,7 +23,9 @@ let models = [
     tag,
     session,
     stu,
-    area
+    area,
+    history,
+    ueditor
 ]
 
 for (let model of models) {

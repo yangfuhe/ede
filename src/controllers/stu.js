@@ -22,7 +22,6 @@ const wxLogin = async ctx => {
         ctx.session.stuId = sd._id;
         ctx.body = getResponse(true, sd._id)
     }
-
 }
 module.exports = {
     queryOpenid,

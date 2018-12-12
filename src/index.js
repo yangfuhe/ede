@@ -1,5 +1,5 @@
 const Koa = require('koa')
-const bodyParser = require('koa-bodyparser')
+    //const bodyParser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const views = require('koa-views')
 const session = require("koa-session")
@@ -13,18 +13,18 @@ const path = require('path')
 const app = new Koa()
     // 服务器log文件
 app.use(logger())
-    //app.use(bodyParser({}))
-app.use(koaBody({
-    multipart: true,
-    formidable: {
-        uploadDir: path.join(__dirname, '../temp'),
-        maxFileSize: 2 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
-        // onFileBegin: (name, file) => {
-        //     const dir = path.join(__dirname, `temp`);
-        //     file.path = `${dir}/${name}`;
-        // },
-    }
-}));
+app.use(koaBody({}))
+    // app.use(koaBody({
+    //     multipart: true,
+    //     formidable: {
+    //         uploadDir: path.join(__dirname, '../temp'),
+    //         maxFileSize: 2 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
+    //         // onFileBegin: (name, file) => {
+    //         //     const dir = path.join(__dirname, `temp`);
+    //         //     file.path = `${dir}/${name}`;
+    //         // },
+    //     }
+    // }));
 app.use(static(path.join(__dirname, '../static')))
 app.use(views(process.env.NODE_ENV !== 'development' ? '' : __dirname + '/view', {
     map: {
@@ -39,6 +39,13 @@ app.use(session({
     signed: false,
 }, app))
 global._videoModel = require('./model_video')
+
+app.use(async(ctx, next) => {
+    if (!ctx.session.orgId) {
+        ctx.session.orgId = '5b88af8d75d86a84f65e45f5'
+    }
+    await next()
+})
 app.use(router.routes(), router.allowedMethods())
 
 
